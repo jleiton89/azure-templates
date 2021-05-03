@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "batchAccountName": {
-      "value": "batchvnetpool1"
+      "value": "batchaccount105"
     },
     "storageAccountsku": {
       "value": "Standard_LRS"
