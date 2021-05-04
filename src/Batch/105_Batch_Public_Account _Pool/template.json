@@ -74,7 +74,9 @@
   },
   "variables": {
     "storageAccountName": "[concat(uniqueString(resourceGroup().id),'storage')]",
-    "virtualNetworkName": "[concat(uniqueString(resourceGroup().id),'virtualNetwork')]"
+    "virtualNetworkName": "[concat(uniqueString(resourceGroup().id),'virtualNetwork')]",
+    "subnet2Ref": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), parameters('subnet2Name'))]"
+  
   },
   "resources": [
     {
@@ -153,7 +155,55 @@
         },
         "publicNetworkAccess": "[parameters('publicNetworkAccess')]"
       }
-    }
+    },
+    {
+            "type": "Microsoft.Batch/batchAccounts/pools",
+            "apiVersion": "2021-01-01",
+            "name": "[concat(parameters('batchAccountName'), '/pool1')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Batch/batchAccounts', parameters('batchAccountName'))]"
+            ],
+            "properties": {
+                "displayName": "pool1",
+                "vmSize": "STANDARD_D2S_V3",
+                "interNodeCommunication": "Disabled",
+                "taskSlotsPerNode": 1,
+                "taskSchedulingPolicy": {
+                    "nodeFillType": "Pack"
+                },
+                "deploymentConfiguration": {
+                    "virtualMachineConfiguration": {
+                        "imageReference": {
+                            "publisher": "microsoftwindowsserver",
+                            "offer": "windowsserver",
+                            "sku": "2016-datacenter-smalldisk",
+                            "version": "latest"
+                        },
+                        "nodeAgentSkuId": "batch.node.windows amd64",
+                        "windowsConfiguration": {
+                            "enableAutomaticUpdates": false
+                        },
+                        "nodePlacementConfiguration": {
+                            "policy": "Regional"
+                        }
+                    }                  
+                }, 
+                "networkConfiguration": {
+                    "subnetId": "[variables('subnet2Ref')]",
+                    "publicIPAddressConfiguration": {
+                        "provision": "NoPublicIPAddresses"
+                    }
+                },
+                "scaleSettings": {
+                    "fixedScale": {
+                        "targetDedicatedNodes": 1,
+                        "targetLowPriorityNodes": 0,
+                        "resizeTimeout": "PT15M"
+                    }
+                }
+            }
+        }
+
   ],
   "outputs": {
     "storageAccountName": {
