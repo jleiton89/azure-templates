@@ -112,7 +112,10 @@
             "[parameters('subnet1Name')]"
           ],
           "properties": {
-            "addressPrefix": "[parameters('subnet2Prefix')]"
+            "addressPrefix": "[parameters('subnet2Prefix')]",
+            "privateEndpointNetworkPolicies" : "Disabled",
+            "privateLinkServiceNetworkPolicies" : "Disabled"
+
           }
         }
       ]

@@ -1,1 +1,1 @@
-New-AzResourceGroupDeployment -Name 100_Batch_Public_Pool_VNET -ResourceGroupName batch2 -TemplateFile template.json -TemplateParameterFile parameters.json
+New-AzResourceGroupDeployment -Name 105_Batch_Public_Pool_VNET -ResourceGroupName batch2 -TemplateFile template.json -TemplateParameterFile parameters.json
