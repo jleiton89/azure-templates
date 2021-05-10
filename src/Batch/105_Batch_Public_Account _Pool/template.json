@@ -104,7 +104,33 @@
             "addressPrefix": "[parameters('subnet1Prefix')]"
           }
         },
+      {
+      "comments": "This NSG allows Batch service communication to Nodes",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "new-nsg",
+      "location": "[parameters('location')]",
+      "apiVersion": "2020-05-01",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "SSH",
+            "properties": {
+              "description": "Allows SSH traffic",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "29876-29877",
+              "sourceAddressPrefix": "BatchNodeManagement",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 100,
+              "direction": "Inbound"
+            }
+          }
+        ]
+      }
+    },
         {
+          "comments": "This NSG allows Batch service communication to Nodes",
           "type": "subnets",
           "apiVersion": "2020-05-01",
           "location": "[parameters('location')]",
@@ -122,6 +148,7 @@
         }
       ]
     },
+   
     {
       "comments": "This storage account is used to associate to a batch account",
       "type": "Microsoft.Storage/storageAccounts",
