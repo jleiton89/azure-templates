@@ -80,8 +80,8 @@
     }
   },
   "variables": {
-    "storageAccountName": "[concat(uniqueString(resourceGroup().id),'storage')]",
-    "virtualNetworkName": "[concat(uniqueString(resourceGroup().id),'virtualNetwork')]",
+    "storageAccountName": "[concat(uniqueString(resourceGroup().id),'Storage')]",
+    "virtualNetworkName": "[concat(uniqueString(resourceGroup().id),'VirtualNetwork')]",
     "subnet2Ref": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), parameters('subnet2Name'))]"
   },
   "resources": [
