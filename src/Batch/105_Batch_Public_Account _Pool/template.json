@@ -80,8 +80,8 @@
     }
   },
   "variables": {
-    "storageAccountName": "[concat(uniqueString(resourceGroup().id),'Storage')]",
-    "virtualNetworkName": "[concat(uniqueString(resourceGroup().id),'VirtualNetwork')]",
+    "storageAccountName": "[concat(uniqueString(resourceGroup().id),'storage')]",
+    "virtualNetworkName": "[concat(uniqueString(resourceGroup().id),'virtualNetwork')]",
     "subnet2Ref": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), parameters('subnet2Name'))]"
   },
   "resources": [
@@ -113,7 +113,7 @@
               "description": "Allows RDP/SSH into Compute Nodes",
               "protocol": "Tcp",
               "sourcePortRange": "*",
-              "destinationPortRange": "22,3389",
+              "destinationPortRange": "22-3389",
               "sourceAddressPrefix": "*",
               "destinationAddressPrefix": "*",
               "access": "Allow",
