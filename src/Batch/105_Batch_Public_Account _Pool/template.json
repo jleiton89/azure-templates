@@ -2,13 +2,7 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "batchAccountName": {
-      "type": "string",
-      "defaultValue": "[concat(toLower(uniqueString(resourceGroup().id)), 'batch')]",
-      "metadata": {
-        "description": "Batch Account Name"
-      }
-    },
+  
     "publicNetworkAccess": {
       "type": "string",
       "defaultValue": "enabled",
@@ -80,7 +74,7 @@
     }
   },
   "variables": {
-    "batchAccountName": "[concat(uniqueString(resourceGroup().id),'batchAccount')]",
+    "batchAccountName": "[concat(uniqueString(resourceGroup().id),'batch')]",
     "storageAccountName": "[concat(uniqueString(resourceGroup().id),'storage')]",
     "virtualNetworkName": "[concat(uniqueString(resourceGroup().id),'virtualNetwork')]",
     "subnet2Ref": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), parameters('subnet2Name'))]"
@@ -226,7 +220,7 @@
         "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]"
       ],
       "tags": {
-        "ObjectName": "[parameters('batchAccountName')]"
+        "ObjectName": "[variables('batchAccountName')]"
       },
       "properties": {
         "autoStorage": {
@@ -238,9 +232,9 @@
     {
             "type": "Microsoft.Batch/batchAccounts/pools",
             "apiVersion": "2021-01-01",
-            "name": "[concat(parameters('batchAccountName'), '/pool1')]",
+            "name": "[concat(variables('batchAccountName'), '/pool1')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Batch/batchAccounts', parameters('batchAccountName'))]"
+                "[resourceId('Microsoft.Batch/batchAccounts', variables('batchAccountName'))]"
             ],
             "properties": {
                 "displayName": "pool1",
@@ -291,7 +285,7 @@
     },
     "batchAccountName": {
       "type": "string",
-      "value": "[parameters('batchAccountName')]"
+      "value": "[variables('batchAccountName')]"
     }
   }
 }
