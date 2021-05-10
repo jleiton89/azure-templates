@@ -29,6 +29,9 @@
     "subnet2Name": {
       "value": "Subnet2"
     },
+    "nsgName": {
+      "value": "nsg-batch"
+    }
   }
 }
 

@@ -70,15 +70,89 @@
       "metadata": {
         "description": "Location for all resources."
       }
+    },
+    "nsgName": {
+      "type": "string",
+      "defaultValue": "nsg",
+      "metadata": {
+        "description": "Subnet Batch Nodes Name"
+      }
     }
   },
   "variables": {
     "storageAccountName": "[concat(uniqueString(resourceGroup().id),'storage')]",
     "virtualNetworkName": "[concat(uniqueString(resourceGroup().id),'virtualNetwork')]",
     "subnet2Ref": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), parameters('subnet2Name'))]"
-  
   },
   "resources": [
+    {
+      "comments": "This NSG allows Batch service communication to Nodes",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[parameters('nsgName')]",
+      "location": "[parameters('location')]",
+      "apiVersion": "2020-05-01",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "BatchNodeManagement_NSG_Rule",
+            "properties": {
+              "description": "Allows Batch Service Traffic",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "29876-29877",
+              "sourceAddressPrefix": "BatchNodeManagement",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 100,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "BatchNode_RDP_NSG_Rule",
+            "properties": {
+              "description": "Allows RDP/SSH into Compute Nodes",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "22,3389",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 101,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "BatchNodeManagement_NSG_Rule",
+            "properties": {
+              "description": "Allows Outbound Batch Node Management",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "443",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "BatchNodeManagement",
+              "access": "Allow",
+              "priority": 100,
+              "direction": "Outbound"
+            }
+          },
+          {
+            "name": "Storage_NSG_Rule",
+            "properties": {
+              "description": "Allows Outbound Storage Traffic",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "443",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "Storage",
+              "access": "Allow",
+              "priority": 101,
+              "direction": "Outbound"
+            }
+          }
+
+        ]
+      }
+    },
     {
       "type": "Microsoft.Network/virtualNetworks",
       "apiVersion": "2020-05-01",
@@ -104,51 +178,28 @@
             "addressPrefix": "[parameters('subnet1Prefix')]"
           }
         },
-      {
-      "comments": "This NSG allows Batch service communication to Nodes",
-      "type": "Microsoft.Network/networkSecurityGroups",
-      "name": "new-nsg",
-      "location": "[parameters('location')]",
-      "apiVersion": "2020-05-01",
-      "properties": {
-        "securityRules": [
-          {
-            "name": "SSH",
-            "properties": {
-              "description": "Allows SSH traffic",
-              "protocol": "Tcp",
-              "sourcePortRange": "*",
-              "destinationPortRange": "29876-29877",
-              "sourceAddressPrefix": "BatchNodeManagement",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 100,
-              "direction": "Inbound"
-            }
-          }
-        ]
-      }
-    },
         {
-          "comments": "This NSG allows Batch service communication to Nodes",
+          "comments": "This subnet hold the Batch Nodes",
           "type": "subnets",
           "apiVersion": "2020-05-01",
           "location": "[parameters('location')]",
           "name": "[parameters('subnet2Name')]",
           "dependsOn": [
             "[variables('virtualNetworkName')]",
-            "[parameters('subnet1Name')]"
+            "[parameters('subnet1Name')]",
+            "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('nsgName'))]"
           ],
           "properties": {
             "addressPrefix": "[parameters('subnet2Prefix')]",
+            "networkSecurityGroup": {
+              "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('nsgName'))]"
+            },
             "privateEndpointNetworkPolicies" : "Disabled",
             "privateLinkServiceNetworkPolicies" : "Disabled"
-
           }
         }
       ]
     },
-   
     {
       "comments": "This storage account is used to associate to a batch account",
       "type": "Microsoft.Storage/storageAccounts",
