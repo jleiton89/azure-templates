@@ -19,7 +19,9 @@
 
 #Step3 - Create Resource Group in target subscription id
 
-$_deployment_name = "105_Batch_Public_Pool_VNET"
+$_deployment_name = "100_Storage_Account_Container"
+
+#$_deployment_name = Split-Path -Path (Get-Location) -Leaf  #Get current folder 
 
 $_location = "East Us"
 
