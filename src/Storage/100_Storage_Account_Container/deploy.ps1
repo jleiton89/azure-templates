@@ -11,7 +11,6 @@
 
 #Connect-AzAccount
 
-
 #Step2 - Select target subscription Id 
 
 #$subscriptionId = $_subscriptionId
@@ -21,14 +20,14 @@
 #Step3 - Create Resource Group in target subscription id
 
 $_deployment_name = "105_Batch_Public_Pool_VNET"
-$_rgname = "105_Batch_Public_Pool_VNET_v1"
 $_location = "East Us"
 
+$datetime = Get-Date -Format "MM_dd_yyyy-HH_mm"
 
-$resourceGroupName =  $_rgname
+$resourceGroupName =  $_deployment_name + "-" + $datetime 
 
 $location = $_location
 
 New-AzResourceGroup -Name $resourceGroupName -Location $location
 
-New-AzResourceGroupDeployment -Name 105_Batch_Public_Pool_VNET -ResourceGroupName $_rgname -TemplateFile template.json -TemplateParameterFile parameters.json
+New-AzResourceGroupDeployment -Name $_deployment_name -ResourceGroupName $_rgname -TemplateFile template.json -TemplateParameterFile parameters.json
