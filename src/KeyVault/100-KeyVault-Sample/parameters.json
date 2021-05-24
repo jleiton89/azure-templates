@@ -1,0 +1,57 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vaultName": {
+      "value": "mykv123456789"
+    },
+    "location": {
+      "value": "East US"
+    },
+    "enabledForDeployment": {
+      "value": true
+    },
+    "enabledForDiskEncryption": {
+      "value": true
+    },
+    "enabledForTemplateDeployment": {
+      "value": false
+    },
+    "enablePurgeProtection": {
+      "value": false
+    },
+    "enableRbacAuthorization": {
+      "value": false
+    },
+    "enableSoftDelete": {
+      "value": true
+    },
+    "softDeleteRetentionInDays": {
+      "value": 7
+    },
+    "tenantId": {
+      "value": "[subscription().tenantId]"
+    },
+    "networkRuleBypassOptions": {
+      "value": "AzureServices"
+    },
+    "NetworkRuleAction": {
+      "value": "Allow"
+    },
+    "ipRules": {
+      "value": ["201.202.14.134"]
+    },
+    "accessPolicies": {
+      "value": []
+    },
+    "virtualNetworkRules": {
+      "value": []
+    },
+    "skuName": {
+      "value": "Standard"
+    },
+    "tags": {
+      "value": {}
+    }
+  }
+}
