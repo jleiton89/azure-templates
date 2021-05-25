@@ -103,13 +103,6 @@
                 "description": "An array of IPv4 addresses or rangea in CIDR notation, e.g. '124.56.78.91' (simple IP address) or '124.56.78.0/24' (all addresses that start with 124.56.78)."
             }
         },
-        "accessPolicies": {
-            "defaultValue": [],
-            "type": "Array",
-            "metadata": {
-                "description": "An complex object array that contains the complete definition of the access policy."
-            }
-        },
         "virtualNetworkRules": {
             "defaultValue": [],
             "type": "Array",
@@ -134,27 +127,6 @@
             "metadata": {
                 "description": "Tags to be assigned to the KeyVault."
             }
-        },
-         "accessPolicies_tenantId": {
-            "defaultValue": "",
-            "type": "String",
-            "metadata": {
-                "description": "Specifies the Azure Active Directory tenant ID that should be used for authenticating requests to the key vault. Get it by using Get-AzSubscription cmdlet."
-            }
-        },
-         "accessPolicies_objectId": {
-            "defaultValue": "",
-            "type": "String",
-            "metadata": {
-                "description": "Specifies the Azure Active Directory tenant ID that should be used for authenticating requests to the key vault. Get it by using Get-AzSubscription cmdlet."
-            }
-        },
-         "accessPolicies_applicationId": {
-            "defaultValue": "",
-            "type": "String",
-            "metadata": {
-                "description": "Specifies the Azure Active Directory tenant ID that should be used for authenticating requests to the key vault. Get it by using Get-AzSubscription cmdlet."
-            }
         }
     },
     "variables": {},
@@ -171,33 +143,6 @@
                     "family": "A",
                     "name": "[parameters('skuName')]"
                 },
-                "accessPolicies": [
-                    {
-                        "tenantId": "[parameters('accessPolicies_tenantId')]",
-                        "objectId": "[parameters('accessPolicies_objectId')]",
-                        "applicationId": "[parameters('accessPolicies_applicationId')]",
-                        "permissions": {
-                            "keys": [
-                                "Get",
-                                "Decrypt",
-                                "Encrypt",
-                                "Purge"
-                            ],
-                            "secrets": [
-                                "Get",
-                                "List",
-                                "Set",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore"
-                            ],
-                            "certificates": [
-                                "Get"
-                            ]
-                        }
-                    }
-                ],
                 "enabledForDeployment": "[parameters('enabledForDeployment')]",
                 "enabledForDiskEncryption": "[parameters('enabledForDiskEncryption')]",
                 "enabledForTemplateDeployment": "[parameters('enabledForTemplateDeployment')]",
@@ -226,7 +171,41 @@
                     ]
                 }
             }
-        }
+        },
+         {
+      "type": "Microsoft.KeyVault/vaults/accessPolicies",
+      "name": "[concat(parameters('vaultName'), '/add')]",
+      "apiVersion": "2019-09-01",
+      "properties": {
+        "accessPolicies": [
+          {
+                        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+                        "objectId": "57cb727d-f3bf-4945-8ff1-65b93b61de44",
+                        "applicationId": "ba4ac8e3-7f0c-4ff4-8ba5-b21e75b2c2e0",
+                        "permissions": {
+                            "keys": [
+                                "Get",
+                                "Decrypt",
+                                "Encrypt",
+                                "Purge"
+                            ],
+                            "secrets": [
+                                "Get",
+                                "List",
+                                "Set",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore"
+                            ],
+                            "certificates": [
+                                "Get"
+                            ]
+                        }
+                    }
+        ]
+      }
+    }
     ],
     "outputs": {
         "vaultName": {

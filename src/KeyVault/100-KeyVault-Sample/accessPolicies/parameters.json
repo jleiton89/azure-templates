@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "vaultName": {
-      "value": "keyvault-vr6bxr3owo6me234"
+      "value": "keyvault-vr6bxr3owo6me23"
     },
     "location": {
       "value": "southcentralus"
@@ -49,15 +49,6 @@
     },
     "tags": {
       "value": {}
-    },
-    "accessPolicies_tenantId": {
-      "value": "72f988bf-86f1-41af-91ab-2d7cd011db47"
-    },
-    "accessPolicies_objectId": {
-      "value": "57cb727d-f3bf-4945-8ff1-65b93b61de44"
-    },
-    "accessPolicies_applicationId": {
-      "value": "ba4ac8e3-7f0c-4ff4-8ba5-b21e75b2c2e0"
     }
   }
 }
