@@ -1,0 +1,42 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
+
+- script: |
+    echo Add other tasks to build, test, and deploy your project.
+    echo See https://aka.ms/yaml
+  displayName: 'Run a multi-line script'
+
+- task: AzurePowerShell@5
+  inputs:
+    azureSubscription: 'Visual Studio Enterprise(1c988da3-6827-42d3-b3ab-6a7e42741fbc)'
+    ScriptType: 'InlineScript'
+    Inline: |
+      $resourceGroups = Get-AzResourceGroup
+      
+      $_deployment_name = Split-Path -Path (Get-Location) -Leaf  #Get current folder 
+
+      $_location = "East Us"
+
+      $datetime = Get-Date -Format "MM_dd_yyyy-HH_mm"
+
+      $resourceGroupName =  $_deployment_name + "-" + $datetime 
+
+      $location = $_location
+
+      New-AzResourceGroup -Name $resourceGroupName -Location $location
+
+      New-AzResourceGroupDeployment -Name $_deployment_name -ResourceGroupName $resourceGroupName -TemplateUri  "https://github.com/jleiton89/azure-templates/blob/be8fca818ee84fbb1a74a1da31640be7abb88302/src/Storage/110_Storage_Account_DataLake_Gen2/template.json" -TemplateParameterUri "https://github.com/jleiton89/azure-templates/blob/be8fca818ee84fbb1a74a1da31640be7abb88302/src/Storage/110_Storage_Account_DataLake_Gen2/parameters.json"
+
+    azurePowerShellVersion: 'LatestVersion'
