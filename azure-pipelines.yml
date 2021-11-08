@@ -23,7 +23,7 @@ steps:
     azureSubscription: 'Visual Studio Enterprise(1c988da3-6827-42d3-b3ab-6a7e42741fbc)'
     ScriptType: 'InlineScript'
     Inline: |
-      $resourceGroups = Get-AzResourceGroup
+
       
       $_deployment_name = Split-Path -Path (Get-Location) -Leaf  #Get current folder 
 
@@ -37,6 +37,6 @@ steps:
 
       New-AzResourceGroup -Name $resourceGroupName -Location $location
 
-      New-AzResourceGroupDeployment -Name $_deployment_name -ResourceGroupName $resourceGroupName -TemplateUri  "https://github.com/jleiton89/azure-templates/blob/be8fca818ee84fbb1a74a1da31640be7abb88302/src/Storage/110_Storage_Account_DataLake_Gen2/template.json" -TemplateParameterUri "https://github.com/jleiton89/azure-templates/blob/be8fca818ee84fbb1a74a1da31640be7abb88302/src/Storage/110_Storage_Account_DataLake_Gen2/parameters.json" -debug
+      New-AzResourceGroupDeployment -Name $_deployment_name -ResourceGroupName $resourceGroupName -TemplateUri  "https://raw.githubusercontent.com/jleiton89/azure-templates/be8fca818ee84fbb1a74a1da31640be7abb88302/src/Storage/110_Storage_Account_DataLake_Gen2/template.json" -TemplateParameterUri "https://raw.githubusercontent.com/jleiton89/azure-templates/main/src/Storage/110_Storage_Account_DataLake_Gen2/parameters.json"
 
     azurePowerShellVersion: 'LatestVersion'
