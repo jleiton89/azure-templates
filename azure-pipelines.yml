@@ -37,6 +37,6 @@ steps:
 
       New-AzResourceGroup -Name $resourceGroupName -Location $location
 
-      New-AzResourceGroupDeployment -Name $_deployment_name -ResourceGroupName $resourceGroupName -TemplateUri  "https://github.com/jleiton89/azure-templates/blob/be8fca818ee84fbb1a74a1da31640be7abb88302/src/Storage/110_Storage_Account_DataLake_Gen2/template.json" -TemplateParameterUri "https://github.com/jleiton89/azure-templates/blob/be8fca818ee84fbb1a74a1da31640be7abb88302/src/Storage/110_Storage_Account_DataLake_Gen2/parameters.json"
+      New-AzResourceGroupDeployment -Name $_deployment_name -ResourceGroupName $resourceGroupName -TemplateUri  "https://github.com/jleiton89/azure-templates/blob/be8fca818ee84fbb1a74a1da31640be7abb88302/src/Storage/110_Storage_Account_DataLake_Gen2/template.json" -TemplateParameterUri "https://github.com/jleiton89/azure-templates/blob/be8fca818ee84fbb1a74a1da31640be7abb88302/src/Storage/110_Storage_Account_DataLake_Gen2/parameters.json" -debug
 
     azurePowerShellVersion: 'LatestVersion'
